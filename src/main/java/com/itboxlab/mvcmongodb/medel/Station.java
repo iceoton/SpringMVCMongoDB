@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 /**
  * Created by jaturon on 9/28/2015 AD.
  */
-public class Stations {
+public class Station {
 
     @Id
     private String id;
