@@ -85,4 +85,9 @@ public class Station {
     public String toString() {
         return "name_th = " + name_th;
     }
+
+    public String toJsonString(){
+        String jsonStr = "";
+        return null;
+    }
 }

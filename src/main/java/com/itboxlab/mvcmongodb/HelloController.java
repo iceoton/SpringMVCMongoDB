@@ -3,11 +3,18 @@ package com.itboxlab.mvcmongodb;
 import com.itboxlab.mvcmongodb.database.StationDAO;
 import com.itboxlab.mvcmongodb.medel.Loc;
 import com.itboxlab.mvcmongodb.medel.Station;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/")
@@ -19,10 +26,26 @@ public class HelloController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
-        String msg = addStation();
-        model.addAttribute("message", msg);
+        Station station = getStationById("55f27eb30bd410106f005549");
+        station.setName_en("Fuckkkkkkkkkk");
+        updateStation(station);
+
+//        ArrayList<Station> stations = readAllStation();
+//        for(Station station : stations){
+//            msg+= station.toString();
+//        }
+
+        model.addAttribute("message", "");
         return "hello";
     }
+
+    @RequestMapping(value="/test")
+    @ResponseBody
+    public Station printMethod2(ModelMap model){
+
+        return getStationById("55f27eb30bd410106f005549");
+    }
+
     private String addStation(){
         Station st = new Station();
         st.setName_th("ชื่อภาษาไทย");
@@ -41,9 +64,46 @@ public class HelloController {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
         Station station = stationDAO.addStation(st);
+        ctx.close();
 
         return station.getId();
 
+    }
+    private ArrayList<Station> readAllStation(){
+
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
+        ArrayList<Station> stations = stationDAO.getAllStations();
+        ctx.close();
+        return stations;
+    }
+
+    private boolean removeStationById(String id){
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
+        int result = stationDAO.reMoveStationById(id);
+        ctx.close();
+        System.out.print("Result = " + result);
+        if(result==0) {
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+    private void updateStation(Station station){
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
+        stationDAO.updateStation(station);
+    }
+
+    private Station getStationById(String id ) {
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
+        Station s = stationDAO.getStationById(id);
+        ctx.close();
+
+        return s;
     }
 
     private String connectToDatabase() {
@@ -62,10 +122,22 @@ public class HelloController {
         */
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
-        Station s = stationDAO.readById("55f27eb30bd410106f005549");
+        Station s = stationDAO.getStationById("55f27eb30bd410106f005549");
         ctx.close();
 
         return s.toString();
+    }
+
+    private String converseObjectToJson(Object object){
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = null;
+        try {
+            json = ow.writeValueAsString(object);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return json;
+
     }
 
 
