@@ -15,18 +15,20 @@ public class StationDAOImpl implements StationDAO {
     private static final String STATION_COLLECTION = "stations";
 
     public StationDAOImpl(MongoTemplate mongoOps) {
+
         this.mongoOps = mongoOps;
     }
 
     @Override
-    public void addStation(Station station) {
+    public Station addStation(Station station) {
         this.mongoOps.insert(station, STATION_COLLECTION);
+        return station;
     }
 
     @Override
     public Station readById(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
-
         return this.mongoOps.findOne(query, Station.class, STATION_COLLECTION);
     }
+
 }

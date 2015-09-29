@@ -1,6 +1,7 @@
 package com.itboxlab.mvcmongodb;
 
 import com.itboxlab.mvcmongodb.database.StationDAO;
+import com.itboxlab.mvcmongodb.medel.Loc;
 import com.itboxlab.mvcmongodb.medel.Station;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,31 @@ public class HelloController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
-        String msg = connectToDatabase();
+        String msg = addStation();
         model.addAttribute("message", msg);
         return "hello";
+    }
+    private String addStation(){
+        Station st = new Station();
+        st.setName_th("ชื่อภาษาไทย");
+        st.setName_en("name English");
+        st.setCategory("TestCate");
+
+        Loc loc = new Loc();
+        loc.setType("Loc type");
+        loc.setCoordinates(new String[]{"1231243", "1231231"});
+        st.setLoc(loc);
+
+        st.setName_th("ชื่อถนน");
+        st.setName_en("Street name");
+        st.setPhoto(new String[]{"",""});
+
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
+        Station station = stationDAO.addStation(st);
+
+        return station.getId();
+
     }
 
     private String connectToDatabase() {
@@ -39,7 +62,7 @@ public class HelloController {
         */
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         StationDAO stationDAO = ctx.getBean("stationDAO", StationDAO.class);
-        Station s = stationDAO.readById("5608ce3448297ce911aec250");
+        Station s = stationDAO.readById("55f27eb30bd410106f005549");
         ctx.close();
 
         return s.toString();
