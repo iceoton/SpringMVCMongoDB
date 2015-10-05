@@ -49,4 +49,8 @@
     <bean id="stationDAO" class="com.itboxlab.mvcmongodb.database.StationDAOImpl">
         <constructor-arg name="mongoOps" ref="mongoTemplate"/>
     </bean>
+    <bean id="userDAO" class="com.itboxlab.mvcmongodb.database.UserDAOImpl">
+        <constructor-arg name ="mongoOps" ref="mongoTemplate"/>
+
+    </bean>
 </beans>

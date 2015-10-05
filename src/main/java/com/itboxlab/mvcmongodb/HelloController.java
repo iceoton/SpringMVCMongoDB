@@ -1,8 +1,10 @@
 package com.itboxlab.mvcmongodb;
 
 import com.itboxlab.mvcmongodb.database.StationDAO;
+import com.itboxlab.mvcmongodb.functions.Userfunction;
 import com.itboxlab.mvcmongodb.medel.Loc;
 import com.itboxlab.mvcmongodb.medel.Station;
+import com.itboxlab.mvcmongodb.medel.User;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping("/")
 public class HelloController {
+    Userfunction userfn = new Userfunction();
     /*public static final String DB_NAME = "test";
     public static final String STATION_COLLECTION = "stations";
     public static final String MONGO_HOST = "localhost";
@@ -26,16 +29,10 @@ public class HelloController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
-        Station station = getStationById("55f27eb30bd410106f005549");
-        station.setName_en("Fuckkkkkkkkkk");
-        updateStation(station);
-
-//        ArrayList<Station> stations = readAllStation();
-//        for(Station station : stations){
-//            msg+= station.toString();
-//        }
-
-        model.addAttribute("message", "");
+        User usr = userfn.getUserByUsername("user") ;
+        usr.setEmail("TEEEEETTTsss");
+        userfn.updateUser(usr);
+        model.addAttribute("message", "Updated");
         return "hello";
     }
 
@@ -57,8 +54,8 @@ public class HelloController {
         loc.setCoordinates(new String[]{"1231243", "1231231"});
         st.setLoc(loc);
 
-        st.setName_th("ชื่อถนน");
-        st.setName_en("Street name");
+        st.setStreet_th("ชื่อถนน");
+        st.setStreet_en("Street name");
         st.setPhoto(new String[]{"",""});
 
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
@@ -139,6 +136,8 @@ public class HelloController {
         return json;
 
     }
+
+
 
 
 }

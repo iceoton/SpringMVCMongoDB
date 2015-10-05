@@ -49,6 +49,7 @@ public class StationDAOImpl implements StationDAO {
 
     @Override
     public void updateStation(Station station) {
-            this.mongoOps.save(station, STATION_COLLECTION);
+
+        this.mongoOps.save(station, STATION_COLLECTION);
     }
 }
