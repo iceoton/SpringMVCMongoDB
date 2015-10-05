@@ -1,4 +1,4 @@
-package com.itboxlab.mvcmongodb;
+package com.itboxlab.mvcmongodb.controller;
 
 import com.itboxlab.mvcmongodb.database.StationDAO;
 import com.itboxlab.mvcmongodb.functions.Userfunction;
@@ -32,7 +32,7 @@ public class HelloController {
         User usr = userfn.getUserByUsername("user") ;
         usr.setEmail("TEEEEETTTsss");
         userfn.updateUser(usr);
-        model.addAttribute("message", "Updated");
+        model.addAttribute("message", "Sun of bitch work for Hello ontroller");
         return "hello";
     }
 
