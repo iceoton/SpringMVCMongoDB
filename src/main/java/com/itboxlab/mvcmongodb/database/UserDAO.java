@@ -7,7 +7,10 @@ import com.itboxlab.mvcmongodb.medel.User;
  */
 public interface UserDAO {
     public User getUser(String usr);
+
     public User addUser(User usr);
+
     public int deleteUser(String username);
+
     public void updateUser(User usr);
 }
