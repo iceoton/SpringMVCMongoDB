@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SpringMongoDB:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SpringMongoDB.war">
+      <element id="artifact" artifact-name="SpringMongoDB:war exploded" />
+    </root>
+  </artifact>
+</component>
